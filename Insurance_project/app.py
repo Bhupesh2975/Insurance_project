@@ -2,12 +2,10 @@ from flask import Flask, render_template, request
 import joblib
 import numpy as np
 
-# Load trained model
-model = joblib.load("insurance_model.lb")  # Apna model yahi save karna
+model = joblib.load("insurance_model.lb")  
 
 app = Flask(__name__)
 
-# Routes
 @app.route("/")
 def home():
     return render_template("index.html")
@@ -23,7 +21,7 @@ def contact():
 @app.route("/project", methods=["POST", "GET"])
 def project():
     if request.method == "POST":
-        # Form data from HTML
+ 
         age = int(request.form["age"])
         sex = int(request.form["sex"])
         bmi = float(request.form["bmi"])
@@ -31,7 +29,6 @@ def project():
         smoker = int(request.form["smoker"])
         region = int(request.form["region"])
 
-        # Prepare input for model
         print('output>>>>>>',age, sex, bmi, children, smoker, region)
         data = np.array([[age, sex, bmi, children, smoker, region]])
         prediction = model.predict(data).item()
@@ -42,6 +39,5 @@ def project():
 
     return render_template("project.html")
 
-# Run the app
 if __name__ == "__main__":
     app.run(debug=True)
